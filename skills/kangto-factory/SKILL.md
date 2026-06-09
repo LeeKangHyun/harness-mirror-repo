@@ -62,6 +62,8 @@ Pipeline · Fan-out/Fan-in · Expert Pool · Producer-Reviewer · Supervisor · 
 
 **2-3. Agent split.** Decide split vs merge on four axes — specialty, parallelism, context load, reuse. (Table in `references/agent-design-patterns.md`.)
 
+**2-4. Optimize the harness you generate, not this skill.** This factory runs occasionally; the harness it produces runs *repeatedly*, so that is where token cost actually accrues. Right-size it here: prefer the **smallest team** that covers the work (3 focused > 5 diffuse — see 5-3); choose **sub-agents over a team** when agents don't need to talk (teams cost more); assign **smaller models** to mechanical roles (3-0 mapping); avoid broadcast `SendMessage({to:"all"})`; and keep the **generated** SKILL.md bodies lean (4-3). A heavy factory that emits a lean harness is fine; a lean factory that emits a bloated harness is not.
+
 ### Phase 3 — Agent definitions
 
 **3-0. Reuse check.** Before creating an agent, compare against existing `.claude/agents/`. If an existing agent fully covers the new role, reuse it; if it partially covers and can generalize, extend it; otherwise create new. (Classification in `references/agent-design-patterns.md`.)
