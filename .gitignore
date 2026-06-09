@@ -1,2 +1,5 @@
 .DS_Store
 .claude/
+
+# kangto-factory example run artifacts (transient)
+skills/kangto-factory/examples/deep-research/_workspace/
