@@ -22,7 +22,9 @@ kangto-factory/
 ├── references/
 │   ├── agent-design-patterns.md      # patterns, execution modes, agent template
 │   ├── orchestrator-template.md      # team / sub-agent / hybrid templates
-│   ├── skill-authoring.md            # skill writing + testing
+│   ├── skill-authoring.md            # skill writing + quick testing
+│   ├── skill-testing-guide.md        # measured eval: assertions, eval agents, workspace
+│   ├── qa-agent-guide.md             # integration coherence, checklist, real bug cases
 │   └── manifest-guide.md             # harness.json lifecycle & rationale
 ├── assets/
 │   ├── harness.schema.json           # JSON Schema for the manifest

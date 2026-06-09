@@ -62,7 +62,7 @@ Pipeline · Fan-out/Fan-in · Expert Pool · Producer-Reviewer · Supervisor · 
 
 Required sections per agent file: core role, working principles, I/O protocol, error handling, collaboration. In team mode add a **Team Communication Protocol** section (who it messages, what tasks it claims). Template + full examples: `references/agent-design-patterns.md`.
 
-**If a QA agent is included:** use `general-purpose` (not read-only `Explore`, which can't run verification scripts); QA's value is **cross-boundary comparison** (read API response + frontend hook, compare shapes), run **incrementally** after each module, not once at the end.
+**If a QA agent is included:** use `general-purpose` (not read-only `Explore`, which can't run verification scripts); QA's value is **cross-boundary comparison** (read API response + frontend hook, compare shapes), run **incrementally** after each module, not once at the end. Full methodology — boundary-mismatch patterns, integration-coherence checks, checklist + agent template, real bug cases: `references/qa-agent-guide.md`.
 
 ### Phase 4 — Skill generation
 
@@ -103,7 +103,7 @@ The orchestrator must specify: execution mode, team composition, a **Phase 0 con
 
 - **Structure:** every agent file present and in place; each skill's `name`+`description` frontmatter valid; no `.claude/commands/` created; `harness.json` matches the files on disk.
 - **By mode:** team → communication paths, task dependencies, team size; sub-agent → I/O wiring, `run_in_background`, return collection; hybrid → mode noted per phase, no dead link at phase boundaries.
-- **Skill execution:** for each skill write 2–3 realistic test prompts; when possible run with-skill vs without-skill to confirm added value; evaluate with assertions (objective) or user review (subjective); iterate by **generalizing** the fix, not patching one case.
+- **Skill execution:** for each skill write 2–3 realistic test prompts; when possible run with-skill vs without-skill to confirm added value; evaluate with assertions (objective) or user review (subjective); iterate by **generalizing** the fix, not patching one case. For rigorous measured evaluation — assertion grading, grader/comparator/analyzer agents, iteration workspace: `references/skill-testing-guide.md`.
 - **Triggers:** 8–10 should-trigger + 8–10 should-NOT-trigger near-miss queries (boundary-ambiguous ones, not obviously-unrelated). Check for collisions with existing skills.
 - **Dry run:** orchestrator phase order is logical; no dead links in data flow; each agent's input matches a prior phase's output; fallback paths are executable.
 
@@ -153,5 +153,7 @@ A harness is not static.
 
 - Patterns, execution modes, agent definition template: `references/agent-design-patterns.md`
 - Orchestrator templates (team / sub-agent / hybrid): `references/orchestrator-template.md`
-- Skill authoring + testing: `references/skill-authoring.md`
+- Skill authoring (writing + quick testing): `references/skill-authoring.md`
+- Skill testing & iteration (measured: assertions, eval agents, workspace): `references/skill-testing-guide.md`
+- QA agent (integration coherence, checklist, real bug cases): `references/qa-agent-guide.md`
 - Manifest schema (`harness.json`): `assets/harness.schema.json` + `references/manifest-guide.md`
