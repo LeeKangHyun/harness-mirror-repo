@@ -65,7 +65,15 @@ Default to teams; when choosing sub-agents, ask "is communication *really* unnec
 
 **Every agent gets a `.claude/agents/{name}.md` file** — even built-in types. The file holds role/principles/protocol; `subagent_type` points at the built-in. Files make the team reusable next session and make the collaboration protocol explicit.
 
-**Model:** default `opus` for reasoning-heavy roles; assign `sonnet`/`haiku` to light gather/format roles to save tokens. Record the model per agent in `harness.json` and pass it explicitly on every call.
+**Model selection.** Don't guess "light vs heavy" — apply this mapping, and **default to `opus` whenever a role is ambiguous** (a predictable default beats inconsistent ones). Record the chosen model per agent in `harness.json` and pass it explicitly on every call.
+
+| Model | Assign when the role's core work is… | Examples |
+|-------|--------------------------------------|----------|
+| `opus` | reasoning, synthesis, integration, planning, conflict resolution, code generation, QA cross-comparison | synthesizer, architect, reviewer, qa-inspector, implementer |
+| `sonnet` | structured gathering with light judgment, drafting, routine transforms, summarization | web-scout, drafter, summarizer, router |
+| `haiku` | deterministic/mechanical work with clear rules — extraction, formatting, rule-based classification, renaming | formatter, extractor, tagger |
+
+Rule of thumb: if a wrong output would require *reasoning* to catch, use `opus`. If correctness is *mechanically checkable*, a smaller model is fine. When unsure, use `opus`.
 
 ---
 

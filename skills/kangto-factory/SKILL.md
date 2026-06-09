@@ -68,7 +68,7 @@ Pipeline · Fan-out/Fan-in · Expert Pool · Producer-Reviewer · Supervisor · 
 
 **Every agent gets a file** at `.claude/agents/{name}.md` — even built-in types (`general-purpose`, `Explore`, `Plan`), which still get a file holding role + principles + protocols (the `subagent_type` just points at the built-in). Files exist so the team is reusable next session and the collaboration protocol is explicit.
 
-**Model:** default `opus` for reasoning-heavy roles; you may assign `sonnet`/`haiku` to lightweight gather/format roles to save tokens. Record the chosen model per agent in the manifest, and pass it explicitly on every Agent/TeamCreate call.
+**Model:** assign per role using the concrete mapping in `references/agent-design-patterns.md` ("Model selection") — `opus` for reasoning/synthesis/QA, `sonnet` for structured gather/draft, `haiku` for mechanical extract/format; **default to `opus` when a role is ambiguous** (predictable beats inconsistent). Record the chosen model per agent in the manifest and pass it explicitly on every Agent/TeamCreate call.
 
 Required sections per agent file: core role, working principles, I/O protocol, error handling, collaboration. In team mode add a **Team Communication Protocol** section (who it messages, what tasks it claims). Template + full examples: `references/agent-design-patterns.md`.
 
