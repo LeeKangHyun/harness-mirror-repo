@@ -26,7 +26,7 @@ When triggered, first read what already exists:
    - **New build** — no manifest / empty agent+skill dirs → run Phases 1–6.
    - **Extend** — manifest exists, user wants new agent/skill → run only the phases the change touches (see matrix).
    - **Maintain** — audit/fix/sync request → go to Phase 7-5.
-3. **Drift check:** compare `harness.json` against the actual files on disk. Report any mismatch (a file the manifest doesn't list, or a manifest entry with no file).
+3. **Drift check:** run `scripts/check_harness.py {project-root}` — it diffs `harness.json` against the files on disk and validates cross-references mechanically (exit 0 = clean, 1 = drift, 2 = no/invalid manifest). Report any mismatch it prints.
 4. Summarize the audit to the user and confirm the plan before writing.
 
 **Extend matrix** (which phases to run):
@@ -101,7 +101,7 @@ The orchestrator must specify: execution mode, team composition, a **Phase 0 con
 
 ### Phase 6 — Validation
 
-- **Structure:** every agent file present and in place; each skill's `name`+`description` frontmatter valid; no `.claude/commands/` created; `harness.json` matches the files on disk.
+- **Structure:** every agent file present and in place; each skill's `name`+`description` frontmatter valid; no `.claude/commands/` created; **run `scripts/check_harness.py {project-root}` and confirm it exits 0** (manifest ↔ disk agree).
 - **By mode:** team → communication paths, task dependencies, team size; sub-agent → I/O wiring, `run_in_background`, return collection; hybrid → mode noted per phase, no dead link at phase boundaries.
 - **Skill execution:** for each skill write 2–3 realistic test prompts; when possible run with-skill vs without-skill to confirm added value; evaluate with assertions (objective) or user review (subjective); iterate by **generalizing** the fix, not patching one case. For rigorous measured evaluation — assertion grading, grader/comparator/analyzer agents, iteration workspace: `references/skill-testing-guide.md`.
 - **Triggers:** 8–10 should-trigger + 8–10 should-NOT-trigger near-miss queries (boundary-ambiguous ones, not obviously-unrelated). Check for collisions with existing skills.

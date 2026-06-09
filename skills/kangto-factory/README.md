@@ -26,6 +26,8 @@ kangto-factory/
 │   ├── skill-testing-guide.md        # measured eval: assertions, eval agents, workspace
 │   ├── qa-agent-guide.md             # integration coherence, checklist, real bug cases
 │   └── manifest-guide.md             # harness.json lifecycle & rationale
+├── scripts/
+│   └── check_harness.py              # drift checker: manifest <-> disk (stdlib only)
 ├── assets/
 │   ├── harness.schema.json           # JSON Schema for the manifest
 │   └── harness.example.json          # worked example (deep-research)

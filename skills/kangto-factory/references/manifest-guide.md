@@ -6,7 +6,7 @@ The manifest is kangto-factory's signature: a machine-readable record of the har
 `.claude/harness.json` at the project root. One manifest per project (a multi-domain project may keep an array of harnesses under `"harnesses"`, but prefer one per domain repo).
 
 ## Lifecycle
-- **Phase 0 (audit):** read the manifest first, then diff it against the files on disk (`.claude/agents/`, `.claude/skills/`). Report drift — a file the manifest omits, or a manifest entry with no file.
+- **Phase 0 (audit):** read the manifest first, then run `scripts/check_harness.py {project-root}` to diff it against the files on disk (`.claude/agents/`, `.claude/skills/`) and validate cross-references. Report any drift it prints.
 - **Phase 5 (write):** after the orchestrator and all agents/skills exist, write the manifest listing everything.
 - **Phase 7 (evolve):** on every change, append a `changelog` entry and update the affected `agents`/`skills` entries. Mirror the one-line changelog into the CLAUDE.md pointer.
 
@@ -50,4 +50,4 @@ The authoritative JSON Schema is `assets/harness.schema.json`. Minimum required 
 ```
 
 ## Validation
-Validate the written manifest against the schema before finishing Phase 5/6. Every `file` path must exist on disk; every `skills`/`usedBy` cross-reference must resolve to a listed entry.
+Run `scripts/check_harness.py {project-root}` before finishing Phase 5/6 and confirm it exits 0. It enforces: required schema fields and enum values; every `file` (agents, skills, orchestrator) exists on disk; no orphan agent/skill files missing from the manifest; every `skills`/`usedBy` cross-reference resolves. This is the mechanical guarantee behind "auditable" — without running it, the claim is hollow.
