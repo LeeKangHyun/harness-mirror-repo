@@ -31,6 +31,8 @@ kangto-factory/
 ├── assets/
 │   ├── harness.schema.json           # JSON Schema for the manifest
 │   └── harness.example.json          # worked example (deep-research)
+├── examples/
+│   └── deep-research/                # a real generated harness (passes the drift checker)
 └── README.md
 ```
 
