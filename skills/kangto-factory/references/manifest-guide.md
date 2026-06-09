@@ -8,12 +8,12 @@ The manifest is kangto-factory's signature: a machine-readable record of the har
 ## Lifecycle
 - **Phase 0 (audit):** read the manifest first, then run `scripts/check_harness.py {project-root}` to diff it against the files on disk (`.claude/agents/`, `.claude/skills/`) and validate cross-references. Report any drift it prints.
 - **Phase 5 (write):** after the orchestrator and all agents/skills exist, write the manifest listing everything.
-- **Phase 7 (evolve):** on every change, append a `changelog` entry and update the affected `agents`/`skills` entries. Mirror the one-line changelog into the CLAUDE.md pointer.
+- **Phase 7 (evolve):** on every change, append a `changelog` entry and update the affected `agents`/`skills` entries, then re-run the drift checker. Do not also log the change in CLAUDE.md — the manifest is the one canonical record.
 
 ## Why this beats prose-only
 - **Drift detection is mechanical** — compare manifest ↔ disk, no human reading required.
 - **Regeneration** — the manifest captures pattern + mode + wiring, so a later session can rebuild or extend deterministically.
-- **CLAUDE.md stays minimal** — it holds only the trigger pointer + changelog; the full inventory lives here, avoiding duplication.
+- **One canonical source** — the full inventory AND the changelog live only here. CLAUDE.md holds just the trigger pointer (so the orchestrator fires in a new session); the `.claude/` files are the implementation. No third surface to drift.
 
 ## Schema
 The authoritative JSON Schema is `assets/harness.schema.json`. Minimum required fields: `name`, `version`, `domain`, `executionMode`, `pattern`, `orchestrator`, `agents`, `skills`, `changelog`.

@@ -88,7 +88,7 @@ The orchestrator must specify: execution mode, team composition, a **Phase 0 con
 
 **5-A. Write the manifest.** Generate `.claude/harness.json` per `assets/harness.schema.json` — list every agent (name, type, model, file, skills, role), every skill (name, file, usedBy), the pattern, execution mode, orchestrator, and a changelog. This is the differentiator: the harness becomes auditable and regenerable, instead of living only as prose.
 
-**5-B. Register the CLAUDE.md pointer** — trigger rule + changelog only. Do **not** duplicate the agent/skill list there; that lives in `harness.json`.
+**5-B. Register the CLAUDE.md pointer** — trigger rule + a pointer to the manifest, nothing else. `harness.json` is the **single canonical record** (inventory + changelog); the `.claude/agents/` and `.claude/skills/` files are its implementation; CLAUDE.md only needs to make the orchestrator trigger in a new session. Do **not** copy the agent/skill list or the changelog into CLAUDE.md — duplicating them just creates a third surface to drift.
 
 ````markdown
 ## Harness: {domain}
@@ -123,7 +123,7 @@ A harness is not static.
 | Team composition | orchestrator + agents |
 | Missing trigger | skill description |
 
-**7-3. Record every change** in the `harness.json` changelog (date, change, target, reason) and mirror the one-line entry into the CLAUDE.md pointer. This tracks evolution and prevents regression.
+**7-3. Record every change** in the `harness.json` changelog (date, change, target, reason) — the one canonical place. Update the affected `agents`/`skills` entries in the same edit, then re-run `scripts/check_harness.py` to confirm the manifest still matches disk. Do not also log it in CLAUDE.md.
 
 **7-4. Propose evolution** proactively when: the same feedback recurs 2+ times, an agent fails repeatedly, or the user keeps bypassing the orchestrator manually.
 
@@ -147,7 +147,7 @@ A harness is not static.
 - [ ] No `.claude/commands/` created; no collision with existing agents/skills
 - [ ] Skill descriptions are pushy and include follow-up keywords (EN + KO)
 - [ ] Tested with 2–3 prompts; triggers validated (should + should-NOT)
-- [ ] CLAUDE.md pointer registered (trigger rule + changelog), no agent/skill list duplicated
+- [ ] CLAUDE.md pointer registered (trigger rule + manifest pointer only); no agent/skill list or changelog duplicated
 
 ## References
 
