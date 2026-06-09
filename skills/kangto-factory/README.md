@@ -34,6 +34,10 @@ kangto-factory/
 └── README.md
 ```
 
+## When NOT to use it
+
+A harness is a meta-layer — it generates config you could write by hand, and that has a cost (extra files, a manifest to sync, process overhead). For a **one-off task or 1–2 agents**, hand-writing a couple of `.claude/agents/*.md` files is faster. A harness earns its cost only when the work **recurs**, **3+ specialists genuinely collaborate**, or you're producing **many harnesses** you want auditable. For simple work, a single agent / a plain skill / a short CLAUDE.md note is the better fit.
+
 ## Install (as a global skill)
 ```shell
 cp -r skills/kangto-factory ~/.claude/skills/kangto-factory

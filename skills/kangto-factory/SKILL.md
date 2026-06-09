@@ -16,6 +16,16 @@ A meta-skill that builds a **harness** for a project/domain: it defines speciali
 
 ---
 
+## When NOT to forge a harness
+
+A harness is a meta-layer that generates config the user could write by hand. It is not free — it adds files, a manifest to keep in sync, and process overhead. Be honest about ROI before building one:
+
+- **One-off task, or 1–2 agents** → skip the factory. Writing a couple of `.claude/agents/*.md` files by hand (or just calling the `Agent` tool with a good prompt) is faster than running a 7-phase build and reviewing its output.
+- **No reuse expected** → if this team will run once and never again, the manifest/orchestrator ceremony is pure overhead.
+- **Simple, well-scoped work** → the value of a harness scales with task complexity; for simple work it mostly adds ceremony. Say so instead of building anyway.
+
+A harness earns its cost when: the work recurs, 3+ specialists genuinely collaborate, or you are producing many harnesses and want them auditable/regenerable. If the request doesn't clear that bar, tell the user a lighter option (a single agent, a plain skill, or a short CLAUDE.md note) is the better fit — then stop.
+
 ## Workflow
 
 ### Phase 0 — Audit current state
