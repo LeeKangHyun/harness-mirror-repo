@@ -8,12 +8,14 @@ This is a personal variant of [`revfactory/harness`](https://github.com/revfacto
 
 | | Original `harness` | `kangto-factory` |
 |-|--------------------|------------------|
-| **Skill language** | Korean body (~458 lines) | **English** body (leaner, lower token cost per trigger) |
-| **Generated record** | prose changelog in CLAUDE.md only | **`.claude/harness.json` manifest** — machine-readable, drift-checkable, regenerable |
+| **Skill language** | Korean body (~458 lines) | **English** body (~157 lines, smaller per trigger) |
+| **Generated record** | prose changelog in CLAUDE.md only | **`.claude/harness.json` manifest** — machine-readable + drift-checkable via `check_harness.py` |
 | **Triggers** | Korean-leaning | **EN + KO bilingual** triggers throughout |
-| **Model policy** | always `opus` | `opus` default, `sonnet`/`haiku` allowed for light roles (recorded per agent) |
+| **Model policy** | always `opus` | `opus` default + explicit opus/sonnet/haiku mapping (recorded per agent) |
 
 The core design — 7-phase workflow, agent↔skill separation, 6 architecture patterns, 3 execution modes, progressive disclosure, pushy descriptions, evolution loop — is inherited from the original.
+
+**Honest caveats.** (1) The factory triggers rarely, so its smaller body saves little on its own — the real token win is right-sizing the *generated* harness (SKILL.md Phase 2-4), not this skill. (2) "Token savings" above is reasoned, not measured. (3) The manifest is drift-*checkable* (the script verifies it matches disk), but not auto-*regenerable* — rebuilding from it is still a manual/LLM step. (4) Like the original, this is prompt-ware: its effect depends on the runtime model following the instructions, and is not independently benchmarked here.
 
 ## Structure
 ```
