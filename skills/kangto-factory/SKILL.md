@@ -1,6 +1,6 @@
 ---
 name: kangto-factory
-description: "Forges a custom harness for any project or domain — defines specialist agents and generates the skills they use. A meta-skill: a factory that turns one domain sentence into an agent team + skill set, recorded in a machine-readable harness.json manifest. TRIGGER on English: 'build/forge a harness', 'create an agent team', 'set up/design a harness for this project', 'kangto factory'. TRIGGER on Korean: '하네스 만들어줘/구성해줘/구축해줘/설계해줘', '강토 공장', '에이전트 팀 만들어줘'. ALSO maintenance & follow-up: 'audit/inspect/sync the harness', 'extend/rebuild/update/rerun the harness', '하네스 점검/감사/동기화/확장/재구성/업데이트'. Use whenever the user wants to scaffold OR evolve a domain-specific agent team and its skills."
+description: "Forges a custom harness for any project or domain — defines specialist agents and generates the skills they use. A meta-skill: a factory that turns one domain sentence into an agent team + skill set, recorded in a machine-readable harness.json manifest. TRIGGER on English: 'build/forge a harness', 'create an agent team', 'set up/design a harness for this project', 'kangto factory'. TRIGGER on Korean: '하네스 만들어줘/구성해줘/구축해줘/설계해줘', '강토 공장', '에이전트 팀 만들어줘'. ALSO maintenance & follow-up: 'audit/inspect/sync the harness', 'extend/rebuild/update/rerun the harness', '하네스 점검/감사/현황/동기화/확장/재구성/업데이트', '하네스 엔지니어링'. Use whenever the user wants to scaffold OR evolve a domain-specific agent team and its skills."
 ---
 
 # kangto-factory — Harness Forge (Agent Team & Skill Architect)
@@ -62,7 +62,7 @@ Pipeline · Fan-out/Fan-in · Expert Pool · Producer-Reviewer · Supervisor · 
 
 **2-3. Agent split.** Decide split vs merge on four axes — specialty, parallelism, context load, reuse. (Table in `references/agent-design-patterns.md`.)
 
-**2-4. Optimize the harness you generate, not this skill.** This factory runs occasionally; the harness it produces runs *repeatedly*, so that is where token cost actually accrues. Right-size it here: prefer the **smallest team** that covers the work (3 focused > 5 diffuse — see 5-3); choose **sub-agents over a team** when agents don't need to talk (teams cost more); assign **smaller models** to mechanical roles (3-0 mapping); avoid broadcast `SendMessage({to:"all"})`; and keep the **generated** SKILL.md bodies lean (4-3). A heavy factory that emits a lean harness is fine; a lean factory that emits a bloated harness is not.
+**2-4. Optimize the harness you generate, not this skill.** This factory runs occasionally; the harness it produces runs *repeatedly*, so that is where token cost actually accrues. Right-size it here: prefer the **smallest team** that covers the work (3 focused > 5 diffuse; sizing table in `references/agent-design-patterns.md`); choose **sub-agents over a team** when agents don't need to talk (teams cost more); assign **smaller models** to mechanical roles (3-0 mapping); avoid broadcast `SendMessage({to:"all"})`; and keep the **generated** SKILL.md bodies lean (4-3). A heavy factory that emits a lean harness is fine; a lean factory that emits a bloated harness is not.
 
 ### Phase 3 — Agent definitions
 
@@ -72,7 +72,7 @@ Pipeline · Fan-out/Fan-in · Expert Pool · Producer-Reviewer · Supervisor · 
 
 **Model:** assign per role using the concrete mapping in `references/agent-design-patterns.md` ("Model selection") — `opus` for reasoning/synthesis/QA, `sonnet` for structured gather/draft, `haiku` for mechanical extract/format; **default to `opus` when a role is ambiguous** (predictable beats inconsistent). Record the chosen model per agent in the manifest and pass it explicitly on every Agent/TeamCreate call.
 
-Required sections per agent file: core role, working principles, I/O protocol, error handling, collaboration. In team mode add a **Team Communication Protocol** section (who it messages, what tasks it claims). Template + full examples: `references/agent-design-patterns.md`.
+Required sections per agent file: core role, working principles, I/O protocol, error handling, collaboration. In team mode add a **Team Communication Protocol** section (who it messages, what tasks it claims). Template: `references/agent-design-patterns.md`. A complete generated harness to model after (agents + skills + manifest, checker-validated): `examples/deep-research/`.
 
 **If a QA agent is included:** use `general-purpose` (not read-only `Explore`, which can't run verification scripts); QA's value is **cross-boundary comparison** (read API response + frontend hook, compare shapes), run **incrementally** after each module, not once at the end. Full methodology — boundary-mismatch patterns, integration-coherence checks, checklist + agent template, real bug cases: `references/qa-agent-guide.md`.
 
@@ -142,7 +142,7 @@ A harness is not static.
 **7-5. Maintenance workflow** (entered from Phase 0 "maintain"):
 1. **Audit** — diff `harness.json` ↔ actual `.claude/agents/` + `.claude/skills/`; report mismatches.
 2. **Change incrementally** — one change at a time, then immediately step 3.
-3. **Sync** — update `harness.json` (and CLAUDE.md changelog).
+3. **Sync** — update `harness.json` (inventory entries + changelog — never CLAUDE.md; see 5-B).
 4. **Verify** — structure check (6); trigger check if triggers changed; full execution/dry-run for large changes; confirm manifest ↔ disk agree.
 
 ---
@@ -158,6 +158,7 @@ A harness is not static.
 - [ ] Reuse checks done before new agents (3-0) and new skills (4-0)
 - [ ] No `.claude/commands/` created; no collision with existing agents/skills
 - [ ] Skill descriptions are pushy and include follow-up keywords (EN + KO)
+- [ ] Generated SKILL.md bodies are lean (<300 lines each, detail in `references/`) — the 2-4 rule, enforced at ship time
 - [ ] Tested with 2–3 prompts; triggers validated (should + should-NOT)
 - [ ] CLAUDE.md pointer registered (trigger rule + manifest pointer only); no agent/skill list or changelog duplicated
 
@@ -169,3 +170,4 @@ A harness is not static.
 - Skill testing & iteration (measured: assertions, eval agents, workspace): `references/skill-testing-guide.md`
 - QA agent (integration coherence, checklist, real bug cases): `references/qa-agent-guide.md`
 - Manifest schema (`harness.json`): `assets/harness.schema.json` + `references/manifest-guide.md`
+- Worked example — a real generated harness with a measured sample run: `examples/deep-research/`

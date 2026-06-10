@@ -6,3 +6,6 @@
 
 # kangto-factory example run artifacts (transient)
 skills/kangto-factory/examples/deep-research/_workspace/
+
+# Python bytecode cache
+__pycache__/

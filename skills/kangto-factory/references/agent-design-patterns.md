@@ -37,6 +37,16 @@ The main agent spawns sub-agents with the `Agent` tool. They return results only
 ```
 Default to teams; when choosing sub-agents, ask "is communication *really* unnecessary?"
 
+### Team sizing
+
+| Workload | Team size | Tasks per member |
+|----------|-----------|------------------|
+| Small (5–10 tasks) | 2–3 agents | 3–5 |
+| Medium (10–20 tasks) | 3–5 agents | 4–6 |
+| Large (20+ tasks) | 5–7 agents | 4–5 |
+
+Coordination overhead grows with every member: 3 focused members beat 5 diffuse ones. Size from the task list, not by default.
+
 ---
 
 ## Architecture patterns

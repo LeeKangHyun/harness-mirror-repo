@@ -19,35 +19,7 @@ The manifest is kangto-factory's signature: a machine-readable record of the har
 The authoritative JSON Schema is `assets/harness.schema.json`. Minimum required fields: `name`, `version`, `domain`, `executionMode`, `pattern`, `orchestrator`, `agents`, `skills`, `changelog`.
 
 ## Example
-```json
-{
-  "name": "deep-research",
-  "version": "1.0.0",
-  "domain": "Multi-source research with cross-validation",
-  "createdAt": "2026-06-09",
-  "executionMode": "team",
-  "pattern": "fan-out-fan-in",
-  "orchestrator": ".claude/skills/research-orchestrator/SKILL.md",
-  "agents": [
-    { "name": "web-scout", "type": "general-purpose", "model": "sonnet",
-      "file": ".claude/agents/web-scout.md", "skills": ["web-search"], "role": "Gather web/news sources" },
-    { "name": "academic-scout", "type": "general-purpose", "model": "opus",
-      "file": ".claude/agents/academic-scout.md", "skills": ["paper-search"], "role": "Gather peer-reviewed sources" },
-    { "name": "synthesizer", "type": "custom", "model": "opus",
-      "file": ".claude/agents/synthesizer.md", "skills": ["cross-validate", "report-write"],
-      "role": "Cross-validate findings and write the report" }
-  ],
-  "skills": [
-    { "name": "web-search",     "file": ".claude/skills/web-search/SKILL.md",     "usedBy": ["web-scout"] },
-    { "name": "paper-search",   "file": ".claude/skills/paper-search/SKILL.md",   "usedBy": ["academic-scout"] },
-    { "name": "cross-validate", "file": ".claude/skills/cross-validate/SKILL.md", "usedBy": ["synthesizer"] },
-    { "name": "report-write",   "file": ".claude/skills/report-write/SKILL.md",   "usedBy": ["synthesizer"] }
-  ],
-  "changelog": [
-    { "date": "2026-06-09", "change": "initial build", "target": "all", "reason": "-" }
-  ]
-}
-```
+Read the canonical worked example: `examples/deep-research/.claude/harness.json` — a real generated harness that passes the drift checker (expected output in `examples/deep-research/README.md`). It is deliberately **not** copied inline here: a duplicated example JSON drifted from the real one once already, which is exactly the failure mode this manifest exists to prevent. One canonical copy, pointers everywhere else — the only exception is `assets/harness.example.json`, a convenience copy that must stay byte-identical to the canonical file (touch one, sync the other).
 
 ## Validation
 Run `scripts/check_harness.py {project-root}` before finishing Phase 5/6 and confirm it exits 0. It enforces: required schema fields and enum values; every `file` (agents, skills, orchestrator) exists on disk; no orphan agent/skill files missing from the manifest; every `skills`/`usedBy` cross-reference resolves. This is the mechanical guarantee behind "auditable" — without running it, the claim is hollow.

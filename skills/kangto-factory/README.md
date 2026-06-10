@@ -8,14 +8,16 @@ This is a personal variant of [`revfactory/harness`](https://github.com/revfacto
 
 | | Original `harness` | `kangto-factory` |
 |-|--------------------|------------------|
-| **Skill language** | Korean body (~458 lines) | **English** body (~157 lines, smaller per trigger) |
+| **Skill language** | Korean body (~458 lines) | **English** body (~173 lines, smaller per trigger) |
 | **Generated record** | prose changelog in CLAUDE.md only | **`.claude/harness.json` manifest** — machine-readable + drift-checkable via `check_harness.py` |
 | **Triggers** | Korean-leaning | **EN + KO bilingual** triggers throughout |
 | **Model policy** | always `opus` | `opus` default + explicit opus/sonnet/haiku mapping (recorded per agent) |
 
 The core design — 7-phase workflow, agent↔skill separation, 6 architecture patterns, 3 execution modes, progressive disclosure, pushy descriptions, evolution loop — is inherited from the original.
 
-**Honest caveats.** (1) The factory triggers rarely, so its smaller body saves little on its own — the real token win is right-sizing the *generated* harness (SKILL.md Phase 2-4), not this skill. (2) "Token savings" above is reasoned, not measured. (3) The manifest is drift-*checkable* (the script verifies it matches disk), but not auto-*regenerable* — rebuilding from it is still a manual/LLM step. (4) Like the original, this is prompt-ware: its effect depends on the runtime model following the instructions, and is not independently benchmarked here.
+**Honest caveats.** (1) The factory triggers rarely, so its smaller body saves little on its own — the real token win is right-sizing the *generated* harness (SKILL.md Phase 2-4), not this skill. (2) "Token savings" is estimated, not tokenizer-measured: a char-based estimate puts the body at ~31% of the original's per-trigger tokens, driven mostly by the Korean→English token-density gap rather than line count (see the comparison report below). (3) The manifest is drift-*checkable* (the script verifies it matches disk), but not auto-*regenerable* — rebuilding from it is still a manual/LLM step. (4) Like the original, this is prompt-ware: its effect depends on the runtime model following the instructions, and is not independently benchmarked here.
+
+**Deeper comparison.** A measured, file-by-file comparison against the original — token estimates, what moved vs what was genuinely lost, a same-brief behavioral test of both skills, and the resulting fix log — lives in [docs/kangto-factory-vs-harness.md](../../docs/kangto-factory-vs-harness.md).
 
 ## Structure
 ```
@@ -32,7 +34,7 @@ kangto-factory/
 │   └── check_harness.py              # drift checker: manifest <-> disk (stdlib only)
 ├── assets/
 │   ├── harness.schema.json           # JSON Schema for the manifest
-│   └── harness.example.json          # worked example (deep-research)
+│   └── harness.example.json          # synced copy of the canonical example (examples/deep-research)
 ├── examples/
 │   └── deep-research/                # a real generated harness (passes the drift checker)
 └── README.md
@@ -55,7 +57,7 @@ your-project/
 │   ├── agents/            # one .md per agent
 │   ├── skills/            # skills + an orchestrator skill
 │   └── harness.json       # the manifest (source of truth)
-└── CLAUDE.md              # minimal pointer: trigger rule + changelog
+└── CLAUDE.md              # minimal pointer: trigger rule + manifest pointer (changelog lives in harness.json)
 ```
 
 License: Apache 2.0 (same as the original harness).
